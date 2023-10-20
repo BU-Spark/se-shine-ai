@@ -20,9 +20,42 @@
 }
 
 .mainRobot {
-    width: 70%;
+    width: 35%;
     height: auto;
-    margin-top: 15%;
+}
+
+.inputGroup {
+    margin-top: 5%;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.label {
+    width: 23%;
+    color: #3AEDB1;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.inputBox {
+    display: inline-block;
+    width: 70%;
+    border: 0;
+    border-bottom: 1px solid #3AEDB1;
+    background: transparent;
+}
+
+.firstNameInput,
+.lastNameInput,
+.emailInput,
+.passwordInput {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #3AEDB1;
+    background-color: transparent;
+    text-align: left;
 }
 
 .button {
@@ -33,24 +66,13 @@
     width: 90%;
     padding: 15px 30px;
     font-size: 0.9rem;
-    border: 0px;
+    border: 0;
 }
 
 .button:hover {
     opacity: 0.93;
     background-color: #3AEDB1;
     color: #121B31;
-}
-
-.textContainer {
-    margin-top: 3.5%;
-    color: #3AEDB1;
-    font-size: 0.9rem;
-}
-
-.textContainer span:nth-child(2) {
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 @media screen and (max-width: 300px) {
