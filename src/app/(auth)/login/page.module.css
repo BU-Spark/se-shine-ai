@@ -57,6 +57,7 @@
 }
 
 .button {
+    cursor: pointer;
     margin-top: 15%;
     background-color: #3AEDB1;
     color: #121B31;

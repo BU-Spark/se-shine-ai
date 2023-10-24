@@ -14,9 +14,9 @@ export default function Login() {
 
   const { emailPasswordLogin, googleLogin, authenticated } = useAuth();
 
-  const handleEmailPasswordLogin = () => {
+  const handleEmailPasswordLogin = async() => {
     try {
-      emailPasswordLogin(email, password);
+      await emailPasswordLogin(email, password);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);

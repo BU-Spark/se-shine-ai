@@ -1,8 +1,10 @@
 'use client'
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { usePathname, useRouter } from 'next/navigation';
+import { CirclesWithBar } from 'react-loader-spinner';
 
 import app from '../firebase/firebaseConfig'
 
@@ -12,6 +14,7 @@ interface AuthContextProps {
   emailPasswordLogin: (email: string, password: string) => void;
   googleLogin: () => void;
   logout: () => void;
+  emailPasswordSignUp: (email: string, password: string, firstName: string, lastName: string) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -28,39 +31,85 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // loading screen state
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
-  // user login with email and password
-  const emailPasswordLogin = async (email: string, password: string) => {
+  // user sign up using email and password
+  const emailPasswordSignUp = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      setUser(user);
-      setAuthenticated(true);
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      // Setting document in the user-data collection
+      await setDoc(doc(db, 'user-data', email), {
+        firstName: firstName,
+        lastName: lastName
+      });
+
+      // delete the user auth
+      await signOut(auth);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // pop-up signup for google
+  // user login with email and password
+  const emailPasswordLogin = async (email: string, password: string) => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+
+      if (user.email) {
+        const emailExist = await getDoc(doc(db, 'user-data', user.email));
+
+        if (emailExist.exists()) {
+          const userData = emailExist.data();
+          const displayName = `${userData.firstName} ${userData.lastName}`;
+
+          // update displayName of Firebase user
+          const customUser = {
+            ...user,
+            displayName: displayName
+          };
+
+          setUser(customUser);
+          setAuthenticated(true);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // pop-up login for google
   const googleLogin = async() => {
-    await signInWithPopup(auth, provider)
-      .then((result) => {
-        setUser(result.user);
-        setAuthenticated(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      setUser(user);
+      setAuthenticated(true);
+
+      if (user.email) {
+        const emailExist = await getDoc(doc(db, 'user-data', user.email));
+
+        // only saves if email does not exist
+        if (!emailExist.exists()) {
+          await setDoc(doc(db, 'user-data', user.email),{
+            // not saving anything for now
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   // logout reset delete firebase User
   const logout = () => {
     signOut(auth)
-      .then(() => {
+    .then(() => {
+        router.push("/")
         setUser(null);
         setAuthenticated(false);
-        router.push("/")
       })
       .catch((error) => {
         console.error(error);
@@ -70,10 +119,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // this allows only public routes to be accessed
   // if they don't have User then they get redirected to /
   useEffect(() => {
-    if (!authenticated && !publicRoutes.includes(pathname)) {
+    if (!loading && !authenticated && !publicRoutes.includes(pathname)) {
       router.push('/');
     }
-  }, [authenticated, pathname]);
+  }, [authenticated, pathname, loading]);
 
   // checks firebase user state
   useEffect(() => {
@@ -101,15 +150,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: 'black'
+        background: '#121B31'
       }}>
-        {/* <IonSpinner style={{width: "10%", height: "10%"}}/> */}
+        <CirclesWithBar
+          height="100"
+          width="100"
+          color="#3AEDB1"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          outerCircleColor=""
+          innerCircleColor=""
+          barColor=""
+          ariaLabel='circles-with-bar-loading'
+        />
       </div>
     ); 
   }
 
   return (
-    <AuthContext.Provider value={{ authenticated, user, emailPasswordLogin, googleLogin, logout }}>
+    <AuthContext.Provider value={{ authenticated, user, emailPasswordLogin, googleLogin, logout, emailPasswordSignUp }}>
       {children}
     </AuthContext.Provider>
   );

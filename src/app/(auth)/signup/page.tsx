@@ -14,7 +14,12 @@ export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { emailPasswordLogin, googleLogin, authenticated } = useAuth();
+  const { emailPasswordSignUp, authenticated } = useAuth();
+
+  const handleEmailPasswordSignUp = async() => {
+    await emailPasswordSignUp(email, password, firstName, lastName);
+    router.push("/");
+  }
 
   useEffect(() => {
     if (authenticated) {
@@ -95,7 +100,7 @@ export default function Login() {
         
         <button
           className={styles.button}
-          onClick={()=>{}}
+          onClick={handleEmailPasswordSignUp}
         >
           Go
         </button>

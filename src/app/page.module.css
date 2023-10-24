@@ -37,6 +37,7 @@
 }
 
 .button:hover {
+    cursor: pointer;
     opacity: 0.93;
     background-color: #3AEDB1;
     color: #121B31;
