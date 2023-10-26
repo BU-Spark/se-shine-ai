@@ -16,6 +16,26 @@ export default function Home() {
     }
   }, [authenticated]);
 
+  const makeApiCall = async() => {
+    try {
+      const response = await fetch('/api/happy', {
+        method: 'POST',
+        body: JSON.stringify({hello: 'world'}),
+      })
+
+      if (!response.ok){
+        throw new Error(response.statusText)
+      }
+      console.log("API TESTING!")
+      const data = await response.json();
+
+      console.log(data)
+    } catch(error) {
+      console.error(error)
+    }
+
+  }
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.secondContainer}>
@@ -49,6 +69,7 @@ export default function Home() {
             Let’s Register our Friendship 
           </span>
         </div>
+        <button onClick={makeApiCall}>make api call</button>
       </div>
     </div>
   )

@@ -18,6 +18,7 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 - **Libraries/UI Components**
     - react-loader-spinner
 - **Database:** Firebase
+- **Hosting** Vercel or Netlify
 - **CI/CD:** GitHub Actions
 - **Testing:** (To be determined)
 
@@ -45,12 +46,14 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
    - Run `npm run dev` 
    - This command starts the development server, enabling you to see the changes in real-time as you work on the project.
 
-### Deployment
+### Build & Deployment
 
 1. **Build the project:**
    - Run `npm run build` 
    - This command creates an optimized production build of your application.
 
 2. **Test the build:**
-   - Run `npm run start` 
+   - Run `npm start` 
    - This command starts the application in production mode, allowing you to test the built project before deploying it to a live environment.
+
+3. **Deploy to Vercel**
