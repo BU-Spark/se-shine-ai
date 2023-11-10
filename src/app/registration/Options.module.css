@@ -1,0 +1,29 @@
+.mainWrapper {
+  display: flex;
+  justify-content: center; /* This will horizontally center the child container */
+  width: 50%; /* Ensuring it takes the full width */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  border-radius: 0px;
+  overflow: hidden;
+  border: 0px #e0e0e0;
+  align-items: center;
+}
+
+.option {
+  padding: 10px;
+  border: 1px solid #000000;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center;
+  width: 30%;
+}
+
+.option:hover {
+  background-color: #d0d0d0;
+}
