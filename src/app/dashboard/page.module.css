@@ -1,8 +1,5 @@
 .mainContainer {
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     background-color: white;
+    margin-top: 80px;
 }
