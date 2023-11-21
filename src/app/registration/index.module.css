@@ -4,3 +4,14 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.skipButton {
+  background: none;
+  border: none;
+  color: gray;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 550;
+  display: block;
+  margin: -40px auto 20px;
+}

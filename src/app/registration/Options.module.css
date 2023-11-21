@@ -12,18 +12,74 @@
   overflow: hidden;
   border: 0px #e0e0e0;
   align-items: center;
+  padding: 20px 0px;
 }
 
 .option {
-  padding: 10px;
-  border: 1px solid #000000;
+  font-family: 'Open Sans';
+  padding: 20px;
+  font-size: 18pt;
+  font-weight: 600;
+  border: 0.5px solid;
+  border-color: dimgray;
   background-color: #FFFFFF;
   cursor: pointer;
   transition: background-color 0.2s;
-  text-align: center;
-  width: 30%;
+  text-align: left;
+  width: 100%;
+  border-radius:1px;
+  color: #000000;
+  border-radius: 5px;
+  border-width: 1px;
+  justify-content: center;
 }
 
 .option:hover {
-  background-color: #d0d0d0;
+  background-color: #1D2F5B;
+  color: #ffffff;
 }
+
+.gridContainer {
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+  gap: 10px; /* Adjust the space between options */
+  justify-items: center;
+  align-content: start;
+}
+
+.gridOption {
+  font-family: 'Open Sans';
+  padding:20px;
+  font-size: 18pt;
+  font-weight: bold;
+  border-color: dimgray;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: left;
+  width: 100%;
+  color: #000000;
+  border-radius: 5px;
+  border-width: 1px;
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center;
+  margin: 1px 3px;
+}
+
+.gridOption:hover {
+  background-color: #1D2F5B;
+  color: #ffffff;
+}
+
+.selected {
+  background-color: #1D2F5B; 
+  color: #ffffff; 
+}
+
+
+
+
+
+

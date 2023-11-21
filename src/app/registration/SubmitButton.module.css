@@ -6,10 +6,16 @@
 }
 
 .submit {
-  padding: 10px 30px;
+  padding: 15px 100px;
   border: none;
+  border-radius:10px;
   background-color: #3AEDB1;
   color: #1D2F5B;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-top: 20pt;
+  font-family: 'Open Sans';
+  font-size: 18pt;
+  margin-bottom: 50pt;
+  font-weight: bold;
 }
