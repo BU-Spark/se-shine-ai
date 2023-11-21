@@ -1,19 +1,37 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { CirclesWithBar } from 'react-loader-spinner';
 
 export default function Dashboard() {
-
-  const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
-    <div className={styles.mainContainer}>
-    <p>HI, {user?.email}. You are loggin as {user?.displayName}</p>
-    <button onClick={logout} style={{border: '5px solid black', width: "90%"}}>LOGOUT</button>
+    <div className={styles.mainContainer} style={{height: "200px"}}>
+      <h1>Hi, {user?.displayName} !</h1>
+      <h2>You are loggin with {user?.email}</h2>
+      <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
+        <CirclesWithBar
+            height="100"
+            width="100"
+            color="#3AEDB1"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            outerCircleColor=""
+            innerCircleColor=""
+            barColor=""
+            ariaLabel='circles-with-bar-loading'
+        />
+      </div>
+      {/* {user && (
+        <div style={{ whiteSpace: 'pre-wrap', marginTop: '20px', maxHeight: '1000px', overflowX: 'auto' }}>
+          <pre>{JSON.stringify(user, null, 2)}</pre>
+        </div>
+      )} */}
     </div>
   )
 }
