@@ -2,10 +2,17 @@
 
 import Assessment from "@/components/assessment/Assessment";
 import AssessmentNavBar from "@/components/assessment/AssessmentNavBar";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import app from '@/firebase/firebaseConfig';
 
 export default function AssessmentPage() {
 
-    const allQuestions = Array.from({ length: 20 }, 
+    const db = getFirestore(app);
+    const fetchUser = async () => {
+        const email = await getDoc(doc(db, 'user-data', 'bown@bu.edu'));
+    };
+
+    const allQuestions = Array.from({ length: 10 }, 
         (v, i) => ({
             number: i + 1,
             text: `Question ${i + 1}`,

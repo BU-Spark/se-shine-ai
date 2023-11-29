@@ -3,7 +3,7 @@
 }
 
 .progress-bar {
-    width: 50vw;
+    width: 80vw;
     height: 10px;
     border-radius: 10px;
     background-color: #e7e7e7;
@@ -22,12 +22,12 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    width: 35vw;
+    width: 90vw;
     margin: auto;
 }
 
 .assessment-nav-buttons button {
-    padding: 10px 20px;
+    padding: 10px 0;
     border: none;
     border-radius: 15px;
     font-size: 16px;
@@ -35,7 +35,8 @@
     transition: background-color 0.3s ease;
     background-color: #3AEDB1;
     color: #121B31;
-    width: 40%;
+    width: 45%;
+    text-align: center;
 }
   
 .assessment-nav-buttons button:disabled {
