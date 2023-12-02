@@ -16,7 +16,7 @@ const AssessmentQuestion: React.FC<AssessmentQuestionProps> = (
     
     const [selectedValue, setSelectedValue] = useState<number | null>(response);
     
-    const answerChoices = ['One', 'Two', 'Three', 'Four', 'Five'];
+    const answerChoices = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
     const extremesLabels = ['Extreme 1', 'Extreme 2'];
 
     const handleSelection = (value: number) => {

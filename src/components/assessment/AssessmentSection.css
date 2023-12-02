@@ -2,23 +2,35 @@
     display: flex;
     flex-direction: column;
     gap: 0px; 
-    width: 35%;
+    width: 95%;
     align-self: center;
+    align-items: center;
     margin: auto;
-    padding: 20px;
+    margin-top: 4%;
+    margin-bottom: 0;
+    padding: 0%;
+    max-width: 400px;
+    height: 70vh;
 }
 
 .question-wrapper {
     width: 100%;
+    height: 20%;
+    margin: none;
+    margin-bottom: 6%;
+}
+
+.question-wrapper:nth-child(4) {
+    margin-bottom: 0px;
 }
 
 
 .assessment-question-divider {
     width: 100%;
-    margin: 2% 0;
+    margin: auto;
+    margin-top: 1%;
     height: 2px;
     position: relative;
-    border: none;
 }
 
 .assessment-question-divider::before {

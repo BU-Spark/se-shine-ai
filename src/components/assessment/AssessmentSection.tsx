@@ -14,7 +14,6 @@ const AssessmentSection: React.FC<AssessmentSectionProps> = (
 ) => {
     return (
         <div className="assessment-section">
-            <hr className="assessment-question-divider" />
             {questions.map((questionData, index) => (
                 <div key={`question-${questionData.number}`} className="question-wrapper">
                     <AssessmentQuestion 
