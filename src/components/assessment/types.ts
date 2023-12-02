@@ -1,5 +1,8 @@
 export interface QuestionData {
     number: number;
     text: string;
-    answers: string[];
+    answers: {
+        low: string,
+        high: string
+    };
 };

@@ -17,7 +17,6 @@ const AssessmentQuestion: React.FC<AssessmentQuestionProps> = (
     const [selectedValue, setSelectedValue] = useState<number | null>(response);
     
     const answerChoices = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
-    const extremesLabels = ['Extreme 1', 'Extreme 2'];
 
     const handleSelection = (value: number) => {
 
@@ -51,11 +50,16 @@ const AssessmentQuestion: React.FC<AssessmentQuestionProps> = (
                 </div>
 
                 <div className="assessment-question-answer-text">
-                    {extremesLabels.map((label, index) => (
-                        <span key={index} className="assessment-question-answer-label">
-                            {label}
-                        </span>
-                    ))}
+                    <span 
+                        key={`question-${question.number}-answer-low`}
+                        className="assessment-question-answer-label">
+                            {question.answers.low}
+                    </span>
+                    <span 
+                        key={`question-${question.number}-answer-high`}
+                        className="assessment-question-answer-label">
+                            {question.answers.high}
+                    </span>
                 </div>
                 
             </div>
