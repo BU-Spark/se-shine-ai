@@ -6,7 +6,7 @@ import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { usePathname, useRouter } from 'next/navigation';
 import { CirclesWithBar } from 'react-loader-spinner';
 
-import app from '../firebase/firebaseConfig'
+import {app} from '../firebase/firebaseConfig'
 
 interface AuthContextProps {
   authenticated: boolean;
