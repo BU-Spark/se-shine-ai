@@ -1,5 +1,5 @@
 /* navigation bar style */
-.navbar-fixed {
+.navbarFixed {
     position: fixed;
     top: 0;
     left: 0;
@@ -17,7 +17,7 @@
     border-radius: 0 0 16px 16px;
 }
 
-.navbar-container {
+.navbarContainer {
     display: flex;
     align-items: center;
     justify-content: center; 
@@ -25,7 +25,7 @@
 }
 
 /* navigation bar logo */
-.profile-logo {
+.profileLogo {
     width: 36px;
     height: 36px;
     z-index: 9999;
@@ -35,13 +35,13 @@
     transform: translateY(-50%);
 }
 
-.main-logo-transparent {
+.mainLogoTransparent {
     width: auto;
     height: 45px;
     z-index: 9999;
 }
 
-.trophy-container {
+.trophyContainer {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,13 +52,13 @@
     transform: translateY(-50%);
 }
 
-.trophy-logo {
+.trophyLogo {
     width: 36px;
     height: 36px;
     z-index: 9999;
 }
 
-.trophy-container > p {
+.trophyContainer > p {
     color: white;
     font-weight: 400;
     font-size: 20px;
@@ -78,8 +78,8 @@
     align-items: center;
 }
 
-.modal-content {
-    background-color: #121B31;
+.modalContent {
+    background-color: #3B538E;
     color: whitesmoke;
     margin: 15% auto;
     padding: 20px 10px;
@@ -89,7 +89,7 @@
     text-align: center;
 }
 
-.signout-btn {
+.signoutBtn {
     background-color: whitesmoke;
     color: #121B31;
     border: none;

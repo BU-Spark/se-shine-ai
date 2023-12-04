@@ -1,0 +1,60 @@
+/* navigation bar style */
+.routerFixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9990;
+}
+
+.router {
+    background-color: #121B31;
+    padding: 5px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 70px;
+    border-radius: 16px 16px 0 0;
+}
+
+.navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navLabel {
+    color: white;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.dashboardNavLogo {
+    width: 40px;
+    height: 40px;
+}
+
+.divider {
+    height: 40px;
+    width: 2px;
+    background-color: #FDFCFC30;
+    margin: 0 5px;
+}
+
+.divider:first-child, .divider:last-child {
+    background-color: #121B31;
+}
+
+.activeNavLabel {
+    color: #39edb1;
+}
+
+@media screen and (max-width: 768px) {
+    .router {
+        padding: 0px 0px;
+    }
+    .dashboardNavLogo {
+        width: 30px;
+        height: 30px;
+    }
+}

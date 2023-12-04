@@ -1,0 +1,68 @@
+.assessment-page-container {
+    margin: auto;
+    width: 50%;
+    height: 100vh;
+}
+
+.progress-bar {
+    width: 80%;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #e7e7e7;
+    margin: auto;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background-color: #25355e;
+    transition: width 0.5s ease;
+}
+
+.assessment-nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 90%;
+    margin: auto;
+    margin-top: 0px;
+}
+
+.assessment-nav-buttons button {
+    padding: 10px 0;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #3AEDB1;
+    color: #121B31;
+    width: 45%;
+    text-align: center;
+}
+  
+.assessment-nav-buttons button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #eee;
+}
+
+.assessment-nav-buttons button:hover {
+    opacity: 0.8;
+}
+
+.assessment-nav-buttons .submit-button {
+    background-color: #25355e;
+    color: #eee;
+}
+
+.assessment-nav-buttons .submit-button:disabled {
+    color: #121B31;
+}
+
+@media screen and (max-width: 768px) {
+    .assessment-page-container {
+        width: 90%;
+    }
+}
