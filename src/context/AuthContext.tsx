@@ -26,7 +26,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const publicRoutes = ['/login', '/signup', '/']; // specify public routes allowed without authentication
+  const publicRoutes = ['/login', '/signup', '/', '/assessment']; // specify public routes allowed without authentication
   const [user, setUser] = useState<User | null>(null); // contains firebase user or null
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // loading screen state
