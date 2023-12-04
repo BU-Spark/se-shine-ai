@@ -1,11 +1,11 @@
 .assessment-page-container {
     margin: auto;
-    width: 95%;
+    width: 50%;
     height: 100vh;
 }
 
 .progress-bar {
-    width: 80vw;
+    width: 80%;
     height: 10px;
     border-radius: 10px;
     background-color: #e7e7e7;
@@ -24,7 +24,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    width: 90vw;
+    width: 90%;
     margin: auto;
     margin-top: 0px;
 }
@@ -59,4 +59,10 @@
 
 .assessment-nav-buttons .submit-button:disabled {
     color: #121B31;
+}
+
+@media screen and (max-width: 768px) {
+    .assessment-page-container {
+        width: 90%;
+    }
 }

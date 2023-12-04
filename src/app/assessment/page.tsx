@@ -3,7 +3,7 @@
 import Assessment from "@/components/assessment/Assessment";
 import AssessmentNavBar from "@/components/assessment/AssessmentNavBar";
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore";
-import app from '@/firebase/firebaseConfig';
+import { app } from '@/firebase/firebaseConfig';
 import { useEffect, useState } from "react";
 import { QuestionData } from "@/components/assessment/types";
 
