@@ -1,96 +1,172 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import Header from './Header';
-import Question from './Question';
-import Options from './Options';
-import ProgressBar from './ProgressBar';
-import SubmitButton from './SubmitButton';
-import styles from './page.module.css';
-import {db} from '../../firebase/firebaseConfig';
+import { useState } from "react";
+import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
+import ProgressBar from "@ramonak/react-progress-bar";
+
+import Image from 'next/image';
+import { db } from '@/firebase/firebaseConfig';
 import { collection, doc, setDoc } from "firebase/firestore";
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from "@/context/AuthContext";
 
-const Home: React.FC<{ userEmail: string }> = ({ userEmail }) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [selectedOptions, setSelectedOptions] = useState<Set<string>>(new Set());
-  const { user } = useAuth();
+import data from "./data.json"; // statically importing the data
 
-  const handleBackClick = () => {
-    setCurrentStep(prev => prev > 1 ? prev - 1 : 1);
-  };
-
-  const handleSubmitClick = async () => {
-    if (currentStep < 5) {
-      setCurrentStep(prev => prev + 1);
-    } else {
-      // Convert Set to Array for Firebase
-      const optionsArray = Array.from(selectedOptions);
-  
-      try {
-        // Use the user's email to identify the correct document
-        const userEmail = user.email; // Assuming `user.email` is available from your auth context
-        
-        // Save data to Firestore
-        await setDoc(doc(collection(db, 'user-data'), userEmail), {
-          selectedOptions: optionsArray
-        });
-  
-        console.log('Data successfully saved!');
-        // Handle additional logic after successful save, such as redirecting
-      } catch (error) {
-        console.error('Error saving data: ', error);
-        // Handle errors, such as displaying a message to the user
-      }
-    }
-  };
-  const handleSkipClick = () => {
-  setCurrentStep(prev => (prev < 5 ? prev + 1 : prev));
-  };
-  const toggleOption = (option: string) => {
-    setSelectedOptions(prevSelectedOptions => {
-      const newSelectedOptions = new Set(prevSelectedOptions);
-      if (newSelectedOptions.has(option)) {
-        newSelectedOptions.delete(option);
-      } else {
-        newSelectedOptions.add(option);
-      }
-      return newSelectedOptions;
-    });
-  };
-  const subtitles = [
-    "It’s been around...", 
-    "I want to...", 
-    "I am interested in...", 
-    "I would say...",
-    "I want to learn" 
-  ];
-
-
-  return (
-    <div className={styles.container}>
-      <Header step={currentStep} onBackClick={handleBackClick}/>
-      <div className={styles.backAndProgressBar}>
-        <div className={styles.progressBarContainer}>
-          <div
-            className={styles.progressBarFiller}
-          />
-        </div>
-      </div>
-      <Question step={currentStep} subtitle={subtitles[currentStep - 1]} />
-      <Options 
-        step={currentStep} 
-        selectedOptions={selectedOptions} 
-        toggleOption={toggleOption} 
-      />
-      <SubmitButton onClick={handleSubmitClick} />
-      {currentStep === 4 && (
-        <button className={styles.skipButton} onClick={handleSkipClick}>
-          or skip this question...
-        </button>
-        )}
-    </div>
-  );
+// format of firebase question datasets
+interface QuestionData {
+    id: number;
+    question: string;
+    quote: string;
+    options: string[];
+    layout: string | "table" | "bubble"; // table and bubble layouts supported
 }
 
-export default Home;
+export default function Registration() {
+    const router = useRouter();
+
+    const { user } = useAuth();
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedOptionsData, setSelectedOptionsData] = useState<
+        { id: number; options: string[] }[]
+    >(data.map((item) => ({ id: item.id, options: [] }))); // contains id of questions, all selected options
+    const currentQuestionData: QuestionData = data[currentQuestionIndex];
+
+    // goes to next question
+    const onNextClick = () => {
+        if (currentQuestionIndex < data.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+    };
+
+    // goes to previous question
+    const onBackClick = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+        }
+    };
+
+    // updates selected options
+    const onOptionClick = (option: string) => {
+        const updatedSelectedOptionsData = [...selectedOptionsData];
+        const questionIndex = updatedSelectedOptionsData.findIndex(
+            (item) => item.id === currentQuestionData.id
+        );
+        const optionIndex = updatedSelectedOptionsData[questionIndex].options.indexOf(option);
+
+        // if option is not selected (-1) then pushes
+        // else removes the data
+        if (optionIndex === -1) {
+            updatedSelectedOptionsData[questionIndex].options.push(option);
+        } else {
+            updatedSelectedOptionsData[questionIndex].options.splice(optionIndex,1);
+        }
+        setSelectedOptionsData(updatedSelectedOptionsData);
+    };
+
+    // returns boolean
+    // iterates through selected options of current question id
+    // returns true for options saved
+    const isOptionSelected = (option: string) => {
+        const questionIndex = selectedOptionsData.findIndex(
+            (item) => item.id === currentQuestionData.id
+        );
+        return selectedOptionsData[questionIndex].options.includes(option);
+    };
+
+    const uploadRegistrationData = async() => {
+        const userEmail = user.email;
+        const userDocRef = doc(collection(db, 'user-data'), userEmail);
+        await setDoc(userDocRef, {
+          'registration-question': selectedOptionsData,
+        });
+        router.push("/dashboard")
+    }
+
+    return (
+        <div className={styles.registrationContainer}>
+            <Image 
+                src="/main-logo-dark.svg"
+                alt="shine-ai"
+                width={0}
+                height={0}
+                sizes="100vw"
+                priority
+                className={styles.mainLogoDark}
+            />
+            <div className={styles.arrowProgressBarContainer}>
+                <Image 
+                    src="/left-arrow.svg"
+                    alt="shine-ai"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    priority
+                    onClick={onBackClick}
+                    className={styles.leftArrow}
+                />
+                <div className={styles.progressbarContainer}>
+                    <ProgressBar
+                        completed={(currentQuestionIndex / (data.length - 1)) * 100}
+                        bgColor="#1D2F5B"
+                        baseBgColor="#E6E3EB"
+                        height="15px"
+                        customLabel=" "
+                    />
+                </div>
+            </div>
+            
+
+            {currentQuestionData.layout === "bubble" ? (
+                <>
+                    <div className={styles.questionTitle}>
+                        {currentQuestionData.question}
+                    </div>
+                    <div className={styles.questionQuote}>
+                        {currentQuestionData.quote}
+                    </div>
+                    <div className={styles.bubbleStyleContainer}>
+                        {currentQuestionData.options.map((option, index) => (
+                            <div
+                                key={index}
+                                onClick={() => onOptionClick(option)}
+                                className={`${styles.bubbleStyleBox} ${isOptionSelected(option) ? styles.selected : ''}`}
+                            >
+                                {option}
+                            </div>
+                        ))}
+                    </div>
+                    {currentQuestionIndex < data.length - 1 ? (
+                        <button className={styles.registrationButton} onClick={onNextClick}>Next</button>
+                    ) : (
+                        <button className={styles.registrationButton} onClick={uploadRegistrationData}>Submit</button>
+                    )}
+                </>
+            ) : (
+                <>
+                    <div className={styles.questionTitle}>
+                        {currentQuestionData.question}
+                    </div>
+                    <div className={styles.questionQuote}>
+                        {currentQuestionData.quote}
+                    </div>
+                    <div className={styles.tableStyleContainer}>
+                        {currentQuestionData.options.map((option, index) => (
+                            <div
+                                key={index}
+                                onClick={() => onOptionClick(option)}
+                                className={`${styles.tableStyleBox} ${isOptionSelected(option) ? styles.selected : ''}`}
+                            >
+                                {option}
+                            </div>
+                        ))}
+                    </div>
+                    {currentQuestionIndex < data.length - 1 ? (
+                        <button className={styles.registrationButton} onClick={onNextClick}>Next</button>
+                    ) : (
+                        <button className={styles.registrationButton} onClick={uploadRegistrationData}>Submit</button>
+                    )}
+                </>
+            )}
+        </div>
+    );
+}

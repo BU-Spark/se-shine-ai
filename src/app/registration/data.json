@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "question": "How long are you living on this planet?",
+    "quote": "It's been around...",
+    "options": [
+      "5-12 yrs",
+      "13-18 yrs",
+      "19-25 yrs",
+      "26-40 yrs",
+      "40-65 yrs",
+      "65+ yrs"
+    ],
+    "layout": "table"
+  },
+  {
+    "id": 2,
+    "question": "What's on your mind?",
+    "quote": "I want to...",
+    "options": [
+      "Know myself better",
+      "Look for nearby communities",
+      "Work on interpersonal skills",
+      "Get connected with peers",
+      "Get connected with professionals",
+      "Just here to explore"
+    ],
+    "layout": "table"
+  },
+  {
+    "id": 3,
+    "question": "Your Interest Areas",
+    "quote": "I am interested in...",
+    "options": [
+      "Food",
+      "Sports",
+      "Travel",
+      "Arts",
+      "Adventure Activities",
+      "Clubbing",
+      "Books",
+      "Card Games",
+      "Spirituality",
+      "Tech",
+      "Startups",
+      "Finance",
+      "Music",
+      "Social Media"
+    ],
+    "layout": "bubble"
+  },
+  {
+    "id": 4,
+    "question": "Closest culture that resonates with you?",
+    "quote": "I would say...",
+    "options": [
+      "Chinese",
+      "Indian",
+      "Canadian",
+      "Peruvian",
+      "American",
+      "Russian",
+      "African",
+      "Columbian"
+    ],
+    "layout": "bubble"
+  },
+  {
+    "id": 5,
+    "question": "What's on your mind?",
+    "quote": "I want to learn...",
+    "options": [
+      "Time Management",
+      "Goal Setting",
+      "Confidence Building",
+      "Positive Thinking Pattern",
+      "Grief and Loss Management",
+      "Emotional Intelligence"
+    ],
+    "layout": "table"
+  }
+]

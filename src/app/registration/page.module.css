@@ -1,17 +1,106 @@
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* navigation bar setting */
+.registrationContainer {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.mainLogoDark {
+    width: auto;
+    height: 45px;
+}
+.arrowProgressBarContainer {
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+.leftArrow {
+    width: 10%;
+    min-height: 45px;
+}
+.progressbarContainer {
+    flex: 1;
 }
 
-.skipButton {
-  background: none;
-  border: none;
-  color: gray;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 550;
-  display: block;
-  margin: -40px auto 20px;
+/* style for bubble style questions */
+.bubbleStyleContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 80%;
+}
+.bubbleStyleBox {
+    margin: 5px;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* style for table style questions */
+.tableStyleContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.tableStyleBox {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    text-align: center;
+    cursor: "pointer";
+}
+
+/* shared style */
+.questionTitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1D2F5B;
+    padding: 10px;
+}
+.questionQuote {
+    font-size: 20px;
+    font-weight: 700;
+    color: #70747F;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.selected {
+    transition: 0.2s;
+    background-color: rgba(29,47,91);
+    color: white;
+}
+
+/* button style */
+.registrationButton {
+    margin-top: 30px;
+    width: 50%;
+    background-color: #3AEDB1;
+    color: #121B31;
+    font-weight: 700;
+    font-size: 25px;
+    border: none;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 12px;
+}
+.registrationButton:hover {
+    background-color: rgba(58, 237, 177, 0.8);
+}
+
+@media screen and (max-width: 700px) {
+    .registrationContainer {
+        width: 90%;
+    }
+    .registrationButton {
+        width: 70%;
+    }
 }
