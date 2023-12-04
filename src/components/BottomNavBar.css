@@ -1,0 +1,18 @@
+/* navigation bar style */
+.router-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9990;
+}
+
+.router {
+    background-color: #121B31;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    border-radius: 16px 16px 0 0;
+}

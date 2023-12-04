@@ -6,7 +6,7 @@ import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { usePathname, useRouter } from 'next/navigation';
 import { CirclesWithBar } from 'react-loader-spinner';
 
-import app from '../firebase/firebaseConfig'
+import {app} from '../firebase/firebaseConfig'
 
 interface AuthContextProps {
   authenticated: boolean;
@@ -125,14 +125,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [authenticated, pathname, loading]);
 
   // checks firebase user state
+  // this useEffect sets a timer so that user will be removed if idle
+  // the timer will reset if user interacts with the website
   useEffect(() => {
+    let logoutTimer: NodeJS.Timeout;
+
+    const setLogoutTimer = () => {
+      clearTimeout(logoutTimer);
+      logoutTimer = setTimeout(() => logout(), 600000); // 10 minutes idle
+    };
+
+    // events that will extend the timer
+    const events: string[] = ['mousemove', 'mousedown', 'keydown', 'scroll'];
+
+    const handleUserActivity = () => setLogoutTimer();
+    events.forEach(event => window.addEventListener(event, handleUserActivity)); // reset timer when event occurs
+
+    // sets user | redirect them if token expires
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
         setAuthenticated(true);
-        setTimeout(() => {
-          logout();
-        }, 600000); // 10 minutes automatic logout
       } else {
         setUser(null);
         setAuthenticated(false);
@@ -140,7 +153,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      // clean-up process
+      unsubscribe();
+      clearTimeout(logoutTimer);
+      events.forEach(event => window.removeEventListener(event, handleUserActivity));
+    };
   }, [auth]);
 
   if (loading) {
