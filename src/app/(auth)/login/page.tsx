@@ -20,8 +20,21 @@ export default function Login() {
 
   const handleEmailPasswordLogin = async() => {
     try {
-      await emailPasswordLogin(email, password);
+      // receive response containing error codes as well
+      // https://firebase.google.com/docs/auth/admin/errors
+      // error code example: auth/email-already-in-use
+      const authResponse: string|undefined = await emailPasswordLogin(email, password);
+      
       // routing implemented over in AuthContext
+      if (authResponse === undefined) {
+        toast.error("An unexpected error occurred.");
+      } else if (authResponse.includes("auth")) {
+        let parseErrorCode = authResponse.replace("auth/", "").replaceAll("-", " ")
+        toast.error(parseErrorCode);
+      } else if (authResponse === "success") {
+        sessionStorage.setItem("accountCreated", "true"); // save this to show toastify success in login
+        router.push("/login");
+      }
     } catch (error) {
       console.error(error);
     }

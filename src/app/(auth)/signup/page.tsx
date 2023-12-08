@@ -18,7 +18,7 @@ export default function SignUp() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { emailPasswordSignUp, authenticated, logout } = useAuth();
+  const { emailPasswordSignUp, authenticated } = useAuth();
 
   const handleEmailPasswordSignUp = async() => {
     // receive response containing error codes as well
