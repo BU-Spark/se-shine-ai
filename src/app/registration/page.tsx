@@ -100,7 +100,7 @@ export default function Registration() {
         const userDocRef = doc(collection(db, 'user-data'), userEmail);
         await setDoc(userDocRef, {
           'registration-question': selectedOptionsData,
-        });
+        }, { merge: true });
         router.push("/dashboard")
     }
 

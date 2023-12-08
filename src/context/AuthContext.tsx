@@ -42,7 +42,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Setting document in the user-data collection
       await setDoc(doc(db, 'user-data', email), {
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
+        mindScore: 0,
       });
       // delete the user auth
       await signOut(auth);
@@ -110,6 +111,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (!emailExist.exists()) {
           await setDoc(doc(db, 'user-data', user.email),{
             // not saving anything for now
+            mindScore: 0,
           });
         }
 
