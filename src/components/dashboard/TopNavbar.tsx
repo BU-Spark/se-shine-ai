@@ -12,8 +12,7 @@ export default function TopNavbar() {
     const [showModal, setShowModal] = useState(false);
 
     const handleModalClose = (e: React.MouseEvent) => {
-        const target = e.target as HTMLElement;
-        if (target.className === "modal") {
+        if (e.target === e.currentTarget) {
             setShowModal(false);
         }
     }

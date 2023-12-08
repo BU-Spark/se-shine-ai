@@ -12,7 +12,7 @@ import { FirebaseError } from 'firebase/app';
 interface AuthContextProps {
   authenticated: boolean;
   user: any;
-  emailPasswordLogin: (email: string, password: string) => void;
+  emailPasswordLogin: (email: string, password: string) => Promise<string | undefined>;
   googleLogin: () => void;
   logout: () => void;
   emailPasswordSignUp: (email: string, password: string, firstName: string, lastName: string) => Promise<string | undefined>;
@@ -91,8 +91,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           router.push("/dashboard");
         }
       }
+      return "success";
     } catch (error) {
-      console.error(error);
+      // pass error code back to /login
+      if (error instanceof FirebaseError) {
+        return error.code;
+      } else {
+        console.error(error);
+      }
     }
   };
 

@@ -47,6 +47,8 @@
 
 .activeNavLabel {
     color: #39edb1;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 @media screen and (max-width: 768px) {
