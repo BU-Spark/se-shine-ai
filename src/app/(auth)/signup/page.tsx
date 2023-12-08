@@ -6,7 +6,11 @@ import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
 
-export default function Login() {
+// error notification modals
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+export default function SignUp() {
   const router = useRouter();
 
   const [firstName, setFirstName] = useState<string>('');
@@ -14,21 +18,45 @@ export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { emailPasswordSignUp, authenticated } = useAuth();
+  const { emailPasswordSignUp, authenticated, logout } = useAuth();
 
   const handleEmailPasswordSignUp = async() => {
-    await emailPasswordSignUp(email, password, firstName, lastName);
-    router.push("/");
+    // receive response containing error codes as well
+    // https://firebase.google.com/docs/auth/admin/errors
+    // error code example: auth/email-already-in-use
+    const authResponse: string|undefined = await emailPasswordSignUp(email, password, firstName, lastName);
+    
+    if (authResponse === undefined) {
+      toast.error("An unexpected error occurred.");
+    } else if (authResponse.includes("auth")) {
+      let parseErrorCode = authResponse.replace("auth/", "").replaceAll("-", " ")
+      toast.error(parseErrorCode);
+    } else if (authResponse === "success") {
+      sessionStorage.setItem("accountCreated", "true"); // save this to show toastify success in login
+      router.push("/login");
+    }
   }
 
   useEffect(() => {
-    if (authenticated) {
+    if (authenticated && !sessionStorage.getItem("accountCreated")) {
       router.push("/dashboard");
     }
   }, [authenticated]);
 
   return (
     <div className={styles.mainContainer}>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className={styles.secondContainer}>
         <Image 
           src="/main-logo-transparent.svg"

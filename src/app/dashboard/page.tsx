@@ -1,30 +1,11 @@
 'use client'
 
-import { useEffect } from 'react';
 import styles from './page.module.css';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { CirclesWithBar } from 'react-loader-spinner';
-import { doc, getDoc } from "firebase/firestore";
-import { db } from '@/firebase/firebaseConfig';
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const router = useRouter();
-
-  // on load, check if user should do registration quesitons
-  useEffect(() => {
-    const checkRegistrationQuestion = async () => {
-      if (user) {
-        const userRef = doc(db, 'user-data', user.email);
-        const docSnap = await getDoc(userRef);
-        if (docSnap.exists() && !docSnap.data()['registration-question']) {
-          router.push("/registration")
-        }
-      }
-    };
-    checkRegistrationQuestion();
-  }, []);
 
   return (
     <div className={styles.mainContainer}>
