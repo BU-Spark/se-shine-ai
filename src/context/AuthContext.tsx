@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { CirclesWithBar } from 'react-loader-spinner';
 
 import {app} from '../firebase/firebaseConfig'
+import { FirebaseError } from 'firebase/app';
 
 interface AuthContextProps {
   authenticated: boolean;
@@ -14,7 +15,7 @@ interface AuthContextProps {
   emailPasswordLogin: (email: string, password: string) => void;
   googleLogin: () => void;
   logout: () => void;
-  emailPasswordSignUp: (email: string, password: string, firstName: string, lastName: string) => void;
+  emailPasswordSignUp: (email: string, password: string, firstName: string, lastName: string) => Promise<string | undefined>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -38,17 +39,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const emailPasswordSignUp = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-
       // Setting document in the user-data collection
       await setDoc(doc(db, 'user-data', email), {
         firstName: firstName,
         lastName: lastName
       });
-
       // delete the user auth
       await signOut(auth);
+      return "success";
     } catch (error) {
-      console.error(error);
+      // pass error code back to /signup
+      if (error instanceof FirebaseError) {
+        return error.code;
+      } else {
+        console.error(error);
+      }
     }
   };
 
@@ -58,6 +63,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const user = result.user;
 
+      // sets the user
       if (user.email) {
         const emailExist = await getDoc(doc(db, 'user-data', user.email));
 
@@ -73,6 +79,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           setUser(customUser);
           setAuthenticated(true);
+        }
+
+        // routing either to registration or dashboard
+        const userRef = doc(db, 'user-data', user.email);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists() && !docSnap.data()['registration-question']) {
+          router.push("/registration")
+        } else {
+          router.push("/dashboard");
         }
       }
     } catch (error) {
@@ -96,6 +111,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           await setDoc(doc(db, 'user-data', user.email),{
             // not saving anything for now
           });
+        }
+
+        // routing either to registration or dashboard
+        const userRef = doc(db, 'user-data', user.email);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists() && !docSnap.data()['registration-question']) {
+          router.push("/registration")
+        } else {
+          router.push("/dashboard");
         }
       }
     } catch (error) {
