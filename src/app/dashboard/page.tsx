@@ -2,7 +2,9 @@
 
 import { useAuth } from '@/context/AuthContext';
 import styles from './page.module.css';
-import { db } from '@/firebase/firebaseConfig'
+import { db } from '@/firebase/firebaseConfig';
+import Image from 'next/image';
+
 
 // chart.js imports
 import {
@@ -79,6 +81,16 @@ export default function Dashboard() {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.chartContainer}>
+        <h2 className={styles.chartHeaders}>Shine-AI Metrics</h2>
+        <Image 
+          src="/color-therapy.png"
+          alt="shine-ai"
+          width={0}
+          height={0}
+          sizes="100vw"
+          priority
+          className={styles.colorTherapy}
+        />
         <h2 className={styles.chartHeaders}>Overview</h2>
         <PolarArea data={polarData} />
         <Doughnut data={doughnutData} />
