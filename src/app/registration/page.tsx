@@ -1,24 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import ProgressBar from "@ramonak/react-progress-bar";
 
 import Image from 'next/image';
 import { db } from '@/firebase/firebaseConfig';
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
 
-import data from "./data.json"; // statically importing the data
+// notification modals for over clicking options
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // format of firebase question datasets
 interface QuestionData {
     id: number;
+    layout: string | "table" | "bubble"; // table and bubble layouts supported
+    maxSelect: number;
+    options: string[];
     question: string;
     quote: string;
-    options: string[];
-    layout: string | "table" | "bubble"; // table and bubble layouts supported
 }
 
 export default function Registration() {
@@ -26,10 +29,26 @@ export default function Registration() {
 
     const { user } = useAuth();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedOptionsData, setSelectedOptionsData] = useState<
-        { id: number; options: string[] }[]
-    >(data.map((item) => ({ id: item.id, options: [] }))); // contains id of questions, all selected options
+    const [data, setData] = useState<QuestionData[]>([])
+    const [selectedOptionsData, setSelectedOptionsData] = useState<{ id: number; options: string[] }[]>([]);
     const currentQuestionData: QuestionData = data[currentQuestionIndex];
+
+    useEffect(() => {
+        // fetch data from registration-bank/registration-data/ collections
+        const fetchData = async () => {
+            const docRef = doc(db, "registration-bank", "registration-data");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const registrationData = docSnap.data();
+                const fetchedData = registrationData['registration-data']; // questions inside registration-data
+                // initialize data and selectedOptionsData which will be empty
+                setData(fetchedData);
+                setSelectedOptionsData(fetchedData.map((item: QuestionData) => ({ id: item.id, options: [] })));
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // goes to next question
     const onNextClick = () => {
@@ -51,14 +70,17 @@ export default function Registration() {
         const questionIndex = updatedSelectedOptionsData.findIndex(
             (item) => item.id === currentQuestionData.id
         );
-        const optionIndex = updatedSelectedOptionsData[questionIndex].options.indexOf(option);
-
-        // if option is not selected (-1) then pushes
-        // else removes the data
+        const selectedOptions = updatedSelectedOptionsData[questionIndex].options;
+        const optionIndex = selectedOptions.indexOf(option);
+    
         if (optionIndex === -1) {
-            updatedSelectedOptionsData[questionIndex].options.push(option);
+            if (selectedOptions.length < currentQuestionData.maxSelect) {
+                selectedOptions.push(option);
+            } else {
+                toast.warn(`Can't go over ${currentQuestionData.maxSelect} options.`);
+            }
         } else {
-            updatedSelectedOptionsData[questionIndex].options.splice(optionIndex,1);
+            selectedOptions.splice(optionIndex, 1);
         }
         setSelectedOptionsData(updatedSelectedOptionsData);
     };
@@ -84,6 +106,18 @@ export default function Registration() {
 
     return (
         <div className={styles.registrationContainer}>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <Image 
                 src="/main-logo-dark.svg"
                 alt="shine-ai"
@@ -115,57 +149,60 @@ export default function Registration() {
                 </div>
             </div>
             
-
-            {currentQuestionData.layout === "bubble" ? (
-                <>
-                    <div className={styles.questionTitle}>
-                        {currentQuestionData.question}
-                    </div>
-                    <div className={styles.questionQuote}>
-                        {currentQuestionData.quote}
-                    </div>
-                    <div className={styles.bubbleStyleContainer}>
-                        {currentQuestionData.options.map((option, index) => (
-                            <div
-                                key={index}
-                                onClick={() => onOptionClick(option)}
-                                className={`${styles.bubbleStyleBox} ${isOptionSelected(option) ? styles.selected : ''}`}
-                            >
-                                {option}
-                            </div>
-                        ))}
-                    </div>
-                    {currentQuestionIndex < data.length - 1 ? (
-                        <button className={styles.registrationButton} onClick={onNextClick}>Next</button>
-                    ) : (
-                        <button className={styles.registrationButton} onClick={uploadRegistrationData}>Submit</button>
-                    )}
-                </>
-            ) : (
-                <>
-                    <div className={styles.questionTitle}>
-                        {currentQuestionData.question}
-                    </div>
-                    <div className={styles.questionQuote}>
-                        {currentQuestionData.quote}
-                    </div>
-                    <div className={styles.tableStyleContainer}>
-                        {currentQuestionData.options.map((option, index) => (
-                            <div
-                                key={index}
-                                onClick={() => onOptionClick(option)}
-                                className={`${styles.tableStyleBox} ${isOptionSelected(option) ? styles.selected : ''}`}
-                            >
-                                {option}
-                            </div>
-                        ))}
-                    </div>
-                    {currentQuestionIndex < data.length - 1 ? (
-                        <button className={styles.registrationButton} onClick={onNextClick}>Next</button>
-                    ) : (
-                        <button className={styles.registrationButton} onClick={uploadRegistrationData}>Submit</button>
-                    )}
-                </>
+            {/* checking data length and currentQuestionData is crucial here
+            need to wait until it renders from useEffect above */}
+            {data.length > 0 && currentQuestionData && (
+                currentQuestionData.layout === "bubble" ? (
+                    <>
+                        <div className={styles.questionTitle}>
+                            {currentQuestionData.question}
+                        </div>
+                        <div className={styles.questionQuote}>
+                            {currentQuestionData.quote}
+                        </div>
+                        <div className={styles.bubbleStyleContainer}>
+                            {currentQuestionData.options.map((option, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => onOptionClick(option)}
+                                    className={`${styles.bubbleStyleBox} ${isOptionSelected(option) ? styles.selected : ''}`}
+                                >
+                                    {option}
+                                </div>
+                            ))}
+                        </div>
+                        {currentQuestionIndex < data.length - 1 ? (
+                            <button className={styles.registrationButton} onClick={onNextClick}>Next</button>
+                        ) : (
+                            <button className={styles.registrationButton} onClick={uploadRegistrationData}>Submit</button>
+                        )}
+                    </>
+                ) : (
+                    <>
+                        <div className={styles.questionTitle}>
+                            {currentQuestionData.question}
+                        </div>
+                        <div className={styles.questionQuote}>
+                            {currentQuestionData.quote}
+                        </div>
+                        <div className={styles.tableStyleContainer}>
+                            {currentQuestionData.options.map((option, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => onOptionClick(option)}
+                                    className={`${styles.tableStyleBox} ${isOptionSelected(option) ? styles.selected : ''}`}
+                                >
+                                    {option}
+                                </div>
+                            ))}
+                        </div>
+                        {currentQuestionIndex < data.length - 1 ? (
+                            <button className={styles.registrationButton} onClick={onNextClick}>Next</button>
+                        ) : (
+                            <button className={styles.registrationButton} onClick={uploadRegistrationData}>Submit</button>
+                        )}
+                    </>
+                )
             )}
         </div>
     );
