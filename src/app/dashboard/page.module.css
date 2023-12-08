@@ -1,9 +1,38 @@
 .mainContainer {
-    text-align: center;
     background-color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    height: 100vh;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.chartContainer {
+    text-align: center;
+    width: 30%;
+}
+
+.chartHeaders {
+    font-size: 20px;
+    font-weight: 1000;
+    margin-bottom: 15px;
+}
+
+@media screen and (max-width: 1000px) {
+    .chartContainer {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .chartContainer {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .chartContainer {
+        width: 100%;
+    }
 }
