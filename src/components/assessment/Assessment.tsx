@@ -3,6 +3,11 @@ import { QuestionData } from "./types";
 import AssessmentSection from "./AssessmentSection";
 import './Assessment.css';
 
+import { db } from '../../firebase/firebaseConfig'
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from 'next/navigation';
+
 interface AssessmentProps {
     allQuestions: QuestionData[];
     userResponses: number[];
@@ -12,6 +17,9 @@ interface AssessmentProps {
 const Assessment: React.FC<AssessmentProps> = (
     { allQuestions, userResponses, responseCallback }
 ) => {
+    const { user } = useAuth();
+    const router = useRouter();
+
     const [activePage, setActivePage] = useState<number>(1);
     const [allAnswered, setAllAnswered] = useState<boolean>(false);
 
@@ -45,8 +53,17 @@ const Assessment: React.FC<AssessmentProps> = (
         }
     };
 
-    const handleSubmit = () => {
+    // this is should handle assessment metric calculation
+    // we just add up the scores of each circles
+    // currently button have 0~6 values just adding these for metrics
+    const handleSubmit = async() => {
+        const totalScore = userResponses.reduce((acc, current) => acc + current, 0);
 
+        await setDoc(doc(db, 'user-data', user.email), {
+            mindScore: totalScore,
+        }, { merge: true });
+
+        router.push("/dashboard")
     }
 
     const renderActivePage = () => {
