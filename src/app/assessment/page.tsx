@@ -47,20 +47,22 @@ export default function AssessmentPage() {
         const questionDocs = await getDocs(q);
         console.log(questionDocs);
         let questionList: QuestionData[] = [];
-        let qNum = 1;
         questionDocs.forEach((doc) => {
             const docData = doc.data();
             const randomIndex = Math.floor(Math.random() * (questionList.length + 1));
 
             const questionToAdd = {
-                number: qNum,
                 text: docData.question,
                 answers: docData.answers
             } as QuestionData;
 
             questionList.splice(randomIndex, 0, questionToAdd);
-            qNum++;
         });
+
+        questionList.forEach(
+            (question, index) => 
+                question.number = index + 1);
+
         setDbQuestions(questionList);
     };
 
@@ -68,6 +70,7 @@ export default function AssessmentPage() {
         fetchQuestions();
     }, []);
 
+    // Placeholder questions in case db access fails
     const allQuestions = Array.from({ length: numQuestions }, 
         (v, i) => ({
             number: i + 1,
