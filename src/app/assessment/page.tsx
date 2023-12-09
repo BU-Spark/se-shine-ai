@@ -13,31 +13,62 @@ export default function AssessmentPage() {
 
     const db = getFirestore(app);
 
-    const fetchQ = async () => {
+    const numQuestions = 20;
+
+    const getRandomDocIDs = () => {
+        const minVal = 1;
+        const maxVal = 30;
+
+        const numDocs = numQuestions;
+
+        let pool = Array.from({ length: maxVal - minVal + 1 }, (_, i) => i + minVal);
+        
+        const selectedIDs = Array.from({ length: numDocs }, 
+            () => {
+                const randomIndex = Math.floor(Math.random() * pool.length);
+                return pool.splice(randomIndex, 1)[0];
+            });
+
+        const documentIDs = selectedIDs.map(
+            (idNum) => `example-question-${idNum < 10 ? `0${idNum}` : idNum}`
+        );
+
+        return documentIDs;
+    };
+
+    const fetchQuestions = async () => {
         const refPath = '/question-bank/assessment-questions-doc/assessment-questions/example-questions-doc/example-questions/';
         const fireRef = collection(db, refPath);
-        const q = query(fireRef, where('__name__', '<=', 'example-question-20'));
+
+        const docIDs = getRandomDocIDs();
+
+        const q = query(fireRef, where('__name__', 'in', docIDs));
 
         const questionDocs = await getDocs(q);
+        console.log(questionDocs);
         let questionList: QuestionData[] = [];
         let qNum = 1;
         questionDocs.forEach((doc) => {
             const docData = doc.data();
-            questionList.push({
+            const randomIndex = Math.floor(Math.random() * (questionList.length + 1));
+
+            const questionToAdd = {
                 number: qNum,
                 text: docData.question,
                 answers: docData.answers
-            } as QuestionData);
+            } as QuestionData;
+
+            questionList.splice(randomIndex, 0, questionToAdd);
             qNum++;
         });
         setDbQuestions(questionList);
     };
 
     useEffect(() => {
-        fetchQ();
+        fetchQuestions();
     }, []);
 
-    const allQuestions = Array.from({ length: 10 }, 
+    const allQuestions = Array.from({ length: numQuestions }, 
         (v, i) => ({
             number: i + 1,
             text: `Default Example ${i + 1}`,
