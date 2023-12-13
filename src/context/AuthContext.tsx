@@ -45,7 +45,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         lastName: lastName,
         mindScore: 0,
       });
-      // delete the user auth
       await signOut(auth);
       return "success";
     } catch (error) {
