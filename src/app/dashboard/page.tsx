@@ -22,6 +22,7 @@ export default function Dashboard() {
   const router = useRouter();
   const { user } = useAuth();
   const [mindScore, setMindScore] = useState(0);
+  const [buttonLabel, setButtonLabel] = useState('Random Assessment');
 
   useEffect(() => {
     const fetchMindScore = async () => {
@@ -77,11 +78,25 @@ export default function Dashboard() {
       },
     ],
   };
-  
+
+  const handleButtonClick = () => {
+    if (buttonLabel === 'Random Assessment') {
+      setButtonLabel("Let's Go!");
+    } else if (buttonLabel === "Let's Go!") {
+      router.push("/assessment");
+    }
+  };
+
   return (
     <div className={styles.mainContainer}>
       <h2 className={styles.chartHeaders}>Shine-AI Assessments</h2>
-      <button onClick={()=>router.push("/assessment")} className={styles.assessmentBtn}>Assessment1</button>
+      <button onClick={handleButtonClick} className={styles.buttonPushable} role="button">
+        <span className={styles.buttonShadow}></span>
+        <span className={styles.buttonEdge}></span>
+        <span className={`${styles.buttonFront} ${styles.text}`}>
+          {buttonLabel}
+        </span>
+      </button>
       <h2 className={styles.chartHeaders}>Overview</h2>
       <div className={styles.chartContainer}>
         <div className={styles.individualChart}>
