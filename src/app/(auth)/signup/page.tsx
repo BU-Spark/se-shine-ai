@@ -18,7 +18,7 @@ export default function SignUp() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { emailPasswordSignUp, authenticated } = useAuth();
+  const { emailPasswordSignUp } = useAuth();
 
   const handleEmailPasswordSignUp = async() => {
     // receive response containing error codes as well
@@ -36,12 +36,6 @@ export default function SignUp() {
       router.push("/");
     }
   }
-
-  useEffect(() => {
-    if (authenticated && !sessionStorage.getItem("accountCreated")) {
-      router.push("/dashboard");
-    }
-  }, [authenticated]);
 
   return (
     <div className={styles.mainContainer}>
