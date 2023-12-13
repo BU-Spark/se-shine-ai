@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 
 // success notification modals
 import { ToastContainer, toast } from 'react-toastify';

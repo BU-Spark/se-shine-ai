@@ -46,7 +46,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         mindScore: 0,
       });
       // delete the user auth
-      await signOut(auth);
+      setLoading(true);
+      setTimeout(async () => {
+        await signOut(auth);
+        setLoading(false);
+      }, 2000); // make sure it won't direct to main page
       return "success";
     } catch (error) {
       // pass error code back to /signup
