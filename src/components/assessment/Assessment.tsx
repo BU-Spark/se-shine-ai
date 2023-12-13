@@ -14,6 +14,25 @@ interface AssessmentProps {
     responseCallback: (questionNumber: number, updatedValue: number | null) => void;
 }
 
+/**
+ * The Assessment component.
+ * Contains the actual interactive assessment.
+ * 
+ * Parent component is AssessmentPage.
+ * Has AssessmentSection as child component.
+ * 
+ * Responsible for:
+ *  - Displaying the progress bar
+ *  - Splitting up question list into sets (pages) of 4
+ *  - Keeping track of the currently active page
+ *  - Displaying the currently active page of questions as an AssessmentSection
+ *  - Displaying buttons to navigate between pages and handle their logic
+ *  - Keeping track of whether the form is complete to enable the submit button 
+ * 
+ * @prop allQuestions:     list of all questions in assessment
+ * @prop userResponses:    list of all responses user currently has selected
+ * @prop responseCallback: callback function to update userResponses at the page level
+ */
 const Assessment: React.FC<AssessmentProps> = (
     { allQuestions, userResponses, responseCallback }
 ) => {
@@ -21,14 +40,19 @@ const Assessment: React.FC<AssessmentProps> = (
     const router = useRouter();
 
     const [activePage, setActivePage] = useState<number>(1);
-    const [allAnswered, setAllAnswered] = useState<boolean>(false);
+    const [allAnswered, setAllAnswered] = useState<boolean>(false); // Whether or not the form is complete
 
     const questionsPerPage = 4;
+
+    // Split up questions into array of pages (arrays of 'questionsPerPage' questions)
     const questionSets = Array.from( { length: Math.ceil(allQuestions.length / questionsPerPage) },
         (v, i) => allQuestions.slice(i * questionsPerPage, i * questionsPerPage + questionsPerPage));
 
     const lastPage = questionSets.length;
 
+    // Callback to be sent down the DOM.
+    // Only needs to be called on the last page where the submit
+    // button is actually visible.
     const updateAllAnswered = () => {
         const isAllAnswered = userResponses.every((item) => item !== null && item !== undefined);
         setAllAnswered(isAllAnswered);
@@ -68,6 +92,7 @@ const Assessment: React.FC<AssessmentProps> = (
 
     const renderActivePage = () => {
 
+        // Get questions for the current page and the stored user responses
         const responseIndex = (activePage - 1) * questionsPerPage;
         const pageResponses = userResponses.slice(responseIndex, responseIndex + questionsPerPage);
 
