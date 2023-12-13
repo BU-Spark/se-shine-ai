@@ -10,12 +10,36 @@ interface AssessmentQuestionProps {
     formCompleteCallback?: () => void;
 }
 
+/**
+ * The AssessmentQuestion component.
+ * Represents one interactive question of the assessment.
+ * 
+ * Parent component is AssessmentSection.
+ * 
+ * Responsible for:
+ *  - Displaying the question's text
+ *  - Displaying the answer bubbles
+ *  - Displaying the text describing the extremes that the bubbles represent
+ *  - Handling user responses (via callback)
+ *  - Invoking check for form completion (via callback if on last page)
+ * 
+ * @prop question:             the question to be displayed by this component
+ * @prop response:             the stored response for this question (from page)
+ * @prop responseCallback:     callback to update this question's response at the page level
+ * @prop formCompleteCallback: callback to check whether all questions of the whole form have
+ *                             been answered at the Assessment level
+ * 
+ */
 const AssessmentQuestion: React.FC<AssessmentQuestionProps> = ( 
     {question, response, responseCallback, formCompleteCallback} 
 ) => {
     
+    // Value the user has currently selected
     const [selectedValue, setSelectedValue] = useState<number | null>(response);
     
+    // Currently only hardcoded to have seven bubbles along the spectrum
+    // If this changes be sure to change the .assessment-answer-button class and
+    // its children in the CSS to account for the transitioning bubble sizes.
     const answerChoices = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
 
     const handleSelection = (value: number) => {

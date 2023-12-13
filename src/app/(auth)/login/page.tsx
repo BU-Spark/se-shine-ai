@@ -56,13 +56,6 @@ export default function Login() {
     }
   }, [authenticated]);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("accountCreated") === "true") {
-      toast.success("Successfully Created Account!");
-      sessionStorage.removeItem("accountCreated");
-    }
-  }, []);
-
   return (
     <div className={styles.mainContainer}>
       <ToastContainer
