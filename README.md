@@ -6,6 +6,8 @@ Shine AI is a wellbeing and mental health tool that helps support students, work
 
 This is a platform for individuals who are struggling to manage their mental health because of different pressures that exist, whether it be financially, socially or professionally. The platform will consist of a set of natural therapies for their health and wellness like yoga and meditation along with counseling sessions around confidence building, social networking etc. The central purpose of the product is to break down barriers and provide accessible, effective, and personalized solutions to mental health challenges empowering individuals to proactively address their emotional well-being and develop healthy coping mechanisms.
 
+Here is current url to the website: https://se-shine-ai.vercel.app/
+
 ## Add Users
 
 To add yourself to the repository, open a Pull Request modifying `COLLABORATORS`, entering your GitHub username in a newline.
