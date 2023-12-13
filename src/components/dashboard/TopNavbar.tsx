@@ -62,7 +62,6 @@ export default function TopNavbar() {
                         <br />
                         <h2>Menu</h2>
                         <button onClick={logout} className={styles.signoutBtn}>Sign Out</button>
-                        <button onClick={()=>router.push("/assessment")} className={styles.signoutBtn}>Assessment1</button>
                     </div>
                 </div>
             }

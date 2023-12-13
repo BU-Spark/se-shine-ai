@@ -6,17 +6,41 @@
     align-items: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    width: 100%;
 }
 
-.colorTherapy {
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
+.assessmentBtn {
+    background-color: whitesmoke;
+    color: #121B31;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: calc(14px + 0.5vw);
+    margin: 20px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 70%;
 }
 
 .chartContainer {
-    text-align: center;
-    width: 30%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 50%;
+    margin: auto;
+}
+
+.individualChart {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .chartHeaders {
@@ -25,20 +49,34 @@
     margin-bottom: 15px;
 }
 
-@media screen and (max-width: 1000px) {
-    .chartContainer {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 2000px) {
     .chartContainer {
         width: 70%;
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 1000px) {
     .chartContainer {
-        width: 100%;
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .chartContainer {
+        grid-template-columns: 1fr;
+        width: 60%;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .chartContainer {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .chartContainer {
+        width: 90%;
     }
 }

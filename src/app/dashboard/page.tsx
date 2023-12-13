@@ -3,8 +3,7 @@
 import { useAuth } from '@/context/AuthContext';
 import styles from './page.module.css';
 import { db } from '@/firebase/firebaseConfig';
-import Image from 'next/image';
-
+import { useRouter } from 'next/navigation';
 
 // chart.js imports
 import {
@@ -16,10 +15,11 @@ import {
 } from 'chart.js';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { PolarArea, Doughnut, Line } from 'react-chartjs-2';
+import { PolarArea, Doughnut } from 'react-chartjs-2';
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
+  const router = useRouter();
   const { user } = useAuth();
   const [mindScore, setMindScore] = useState(0);
 
@@ -41,7 +41,7 @@ export default function Dashboard() {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Orange'],
     datasets: [
       {
-        data: [mindScore, 20, 32, 128, 24], // mindScore fetch from user-data
+        data: [mindScore, 20, 32, 40, 24], // mindScore fetch from user-data
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
           'rgba(54, 162, 235, 0.5)',
@@ -80,20 +80,20 @@ export default function Dashboard() {
   
   return (
     <div className={styles.mainContainer}>
+      <h2 className={styles.chartHeaders}>Shine-AI Assessments</h2>
+      <button onClick={()=>router.push("/assessment")} className={styles.assessmentBtn}>Assessment1</button>
+      <h2 className={styles.chartHeaders}>Overview</h2>
       <div className={styles.chartContainer}>
-        <h2 className={styles.chartHeaders}>Shine-AI Metrics</h2>
-        <Image 
-          src="/color-therapy.png"
-          alt="shine-ai"
-          width={0}
-          height={0}
-          sizes="100vw"
-          priority
-          className={styles.colorTherapy}
-        />
-        <h2 className={styles.chartHeaders}>Overview</h2>
-        <PolarArea data={polarData} />
-        <Doughnut data={doughnutData} />
+        <div className={styles.individualChart}>
+          <div>
+            <PolarArea data={polarData} />
+          </div>
+        </div>
+        <div className={styles.individualChart}>
+          <div>
+            <Doughnut data={doughnutData} />
+          </div>
+        </div>
       </div>
     </div>
   )

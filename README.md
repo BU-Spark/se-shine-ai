@@ -17,8 +17,11 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 - **Framework:** Next.js
 - **Libraries/UI Components**
     - react-loader-spinner
+    - react-toastify
+    - @ramonak/react-progress-bar
+    - chart.js & react-chartjs-2
 - **Database:** Firebase
-- **Hosting** Vercel or Netlify
+- **Hosting** Vercel
 - **CI/CD:** GitHub Actions
 - **Testing:** (To be determined)
 
@@ -27,12 +30,13 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 - **Home Page:** A welcoming first point of interaction.
 - **Login Page:** Secure user authentication.
 - **Sign Up Page:** User registration.
-- **Dashboard:** A personalized user space to navigate through various offerings.
-- **Questionnaire:** Custom questions to understand and cater to individual needs.
+- **Assessment page:** Custom questions to understand and cater to individual needs.
+- **User Dashboard (Sample):** A personalized user space to navigate through various offerings.
 
 ## Extra Features
 
-- **Admin Pages:** Specialized pages for administrative functions and oversight.
+- **Navigation:** Allows to navigate within dashboard to different websites.
+- **Auth Error Handling** Customized error handle from firebase auth to show success, error
 
 ## Entity Table
 

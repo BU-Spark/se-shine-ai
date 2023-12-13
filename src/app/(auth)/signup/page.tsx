@@ -33,7 +33,7 @@ export default function SignUp() {
       toast.error(parseErrorCode);
     } else if (authResponse === "success") {
       sessionStorage.setItem("accountCreated", "true"); // save this to show toastify success in login
-      router.push("/login");
+      router.push("/");
     }
   }
 
