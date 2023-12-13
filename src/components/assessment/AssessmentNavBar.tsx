@@ -1,6 +1,14 @@
 import Image from 'next/image';
 import './AssessmentNavBar.css';
 
+/**
+ * The AssessmentNavBar component.
+ * The Shine.AI logo bar above the assessment.
+ * 
+ * Provides users a way to exit the assessment and return to
+ * dashboard without completing all quesitons by clicking on 
+ * the logo.
+ */
 export default function AssessmentNavBar() {
     return (
         <nav className="navbar">
