@@ -29,11 +29,8 @@ export default function Login() {
       if (authResponse === undefined) {
         toast.error("An unexpected error occurred.");
       } else if (authResponse.includes("auth")) {
-        let parseErrorCode = authResponse.replace("auth/", "").replaceAll("-", " ")
+        let parseErrorCode = authResponse.replace("auth/", "").replaceAll("-", " ");
         toast.error(parseErrorCode);
-      } else if (authResponse === "success") {
-        sessionStorage.setItem("accountCreated", "true"); // save this to show toastify success in login
-        router.push("/login");
       }
     } catch (error) {
       console.error(error);
