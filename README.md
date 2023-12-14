@@ -42,7 +42,7 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 - **Auth Error Handling** Customized error handle from firebase auth to show success, error, warning.
 - **UI Testing** Use Jest to do UI testing.
 
-### Known Issues and Bugs
+## Known Issues and Bugs
 
 1. **Navigation Bar Logo:**
    - Issue: The navigation bar currently uses the same logo when an item is active.
