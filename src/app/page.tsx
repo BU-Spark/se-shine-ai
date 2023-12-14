@@ -36,7 +36,7 @@ export default function Home() {
       <div className={styles.secondContainer}>
         <Image 
           src="/main-logo-transparent.svg"
-          alt="shine-ai"
+          alt="shine-ai-main"
           width={0}
           height={0}
           sizes="100vw"
@@ -45,7 +45,7 @@ export default function Home() {
         />
         <Image 
           src="/main-robot.svg"
-          alt="shine-ai"
+          alt="shine-ai-robot"
           width={0}
           height={0}
           sizes="100vw"

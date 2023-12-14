@@ -49,6 +49,7 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 - **`context/`**: 
   - `AuthContext.tsx`: Manages authentication-related functionalities. It stores the Firebase JWT token in the context, making it accessible throughout the application.
   - Usage: Import using `import { useAuth } from '@/context/AuthContext';` to access `authenticated`, `user`, `emailPasswordLogin`, `googleLogin`, `logout`, and `emailPasswordSignUp`. Note: Token is lost if idle for more than 10 minutes.
+- **`__test__/`**: Contains Jest test files for the application. This folder is essential for maintaining code quality and ensuring functionality works as expected.
 
 ### `components/` Directory
 - **`assessment/`**: Holds components used in the assessment page.
@@ -59,10 +60,6 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 - **`dashboard/`**: Contains code for the dashboard, including fetching user data for features like graphs.
 - **`assessment/`**: Manages the assessment process, including fetching random 20 questions from a questionnaire in Firebase and saving results as `mindScore`.
 - **`registration/`**: Handles fetching datasets from Firebase for registration questions and saving user-specific information.
-
-## Entity Table
-
-
 
 ## Project Setup
 
@@ -91,6 +88,13 @@ All Pull Requests must follow the Pull Request Template, with a title formatted 
 2. **Test the Build Locally:**
    - After building, run `npm start` to start the application in production mode.
    - This allows you to test the built project on your local machine before deploying it to Vercel.
+
+### Testing
+
+1. **Running Tests:**
+   - To run the UI tests, execute `npm run test` in the project directory.
+   - This will initiate the Jest testing framework to run the UI tests that have been implemented.
+   - In the future, additional tests, including API tests, can be added and run using the same command.
 
 ### Deploying to Vercel
 

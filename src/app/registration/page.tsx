@@ -120,7 +120,7 @@ export default function Registration() {
             />
             <Image 
                 src="/main-logo-dark.svg"
-                alt="shine-ai"
+                alt="shine-ai-logo-dark"
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -130,7 +130,7 @@ export default function Registration() {
             <div className={styles.arrowProgressBarContainer}>
                 <Image 
                     src="/left-arrow.svg"
-                    alt="shine-ai"
+                    alt="left-arrow"
                     width={0}
                     height={0}
                     sizes="100vw"
